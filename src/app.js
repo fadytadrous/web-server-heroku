@@ -1,6 +1,7 @@
 const express = require('express')
 var cors = require('cors');
 const knex = require('knex')
+const PORT = process.env.PORT || 5000
 
 
 const db = knex({
@@ -77,6 +78,6 @@ app.get('/help', (req, res) => {
 app.get('/weather', (req, res) => {
     res.send("weather")
 })
-app.listen(process.env.PORT || 3000, () => {
-    console.log("listening on port 3000!")
+app.listen( PORT, () => {
+    console.log("site working..");
 })
