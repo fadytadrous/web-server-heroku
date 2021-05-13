@@ -67,10 +67,10 @@ app.use(cors({ origin: '*' }));
 app.set('view engine', 'hbs')
 
 app.get('', (req, res) => {
-    res.send("This is test for heroku")
-    // db.select().table('doctors').then(data => {
-    //     res.send(data)
-    // })
+    // res.send("This is test for heroku")
+    db.select().table('doctors').then(data => {
+        res.send(data)
+    })
 })
 app.get('/help', (req, res) => {
     res.send("This is help")
