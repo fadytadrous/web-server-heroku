@@ -8,7 +8,6 @@
     "npm": "6.x"
   },
   "scripts": {
-    "build": "bower install && grunt build",
     "start": "nodemon ./src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon ./src/app.js"
