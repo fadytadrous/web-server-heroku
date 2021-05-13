@@ -71,7 +71,11 @@ app.get('', (req, res) => {
     db.select().table('doctors').then(data => {
         res.send(data)
     })
+    .catch(err =>{
+        console.log(err);
+    })
 })
+
 app.get('/help', (req, res) => {
     res.send("This is help")
 })
