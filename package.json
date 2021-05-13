@@ -5,7 +5,7 @@
   "main": "index.js",
   "engines": {
     "node": "12.x",
-    "npm" : "6.x"
+    "npm": "6.x"
   },
   "scripts": {
     "build": "bower install && grunt build",
@@ -24,7 +24,6 @@
     "knex": "^0.95.4",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
-    "sequelize": "^6.5.0",
-    "sqlite3": "^5.0.1"
+    "sequelize": "^6.5.0"
   }
 }
