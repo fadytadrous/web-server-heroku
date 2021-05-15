@@ -3,15 +3,15 @@ var cors = require('cors');
 const knex = require('knex')
 const PORT = process.env.PORT || 5000
 
-
+// mysql://b37927204c73ea:ee372baa@eu-cdbr-west-01.cleardb.com/heroku_e70fec14c252d2b?reconnect=true
 const db = knex({
     // Enter your own database information here based on what you created
     client: 'mysql2',
     connection: {
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'DruGuide'
+        host: 'eu-cdbr-west-01.cleardb.com',
+        user: 'b37927204c73ea',
+        password: 'ee372baa',
+        database: 'heroku_e70fec14c252d2b'
     }
 });
 
@@ -83,5 +83,5 @@ app.get('/weather', (req, res) => {
     res.send("weather")
 })
 app.listen( PORT, () => {
-    console.log("site working..");
+    console.log("site working...");
 })
