@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-
+const PORT = process.env.PORT || 3000
 app.use(cors())
 // app.use(bodyParser.json());
 
@@ -30,7 +30,7 @@ app.use('/', require('./routes/doctorProfile'));
 app.use('/', require('./routes/addpatient'));
 
 // starting the server
-app.listen(3000, ()=> {
+app.listen(PORT, ()=> {
     console.log('app is running on port 3000');
   })
 
