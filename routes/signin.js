@@ -17,7 +17,7 @@ router.post('/signin', (req, res) => {
                             'address','email','photo').from('doctors')
             .where('email', '=', email)
             .then(user => {
-              console.log(user[0])
+              // console.log(user[0])
               res.json(user[0])
             })
             .catch(err => res.status(400).json('unable to get user'))
@@ -32,13 +32,14 @@ router.post('/signin', (req, res) => {
       .where('email', '=', email)
       .then(async (data) => {
         const isValid = await bcrypt.compareSync(password, data[0].password);
+        console.log(email)
         if (isValid) {
           return db.select( 'secretary_id', 'first_name', 'last_name','gender','ssn',
                             'phone_number','birth_date', 'education',
                             'address','email','photo').from('secretary')
             .where('email', '=', email)
             .then(user => {
-              console.log(user[0])
+              // console.log(user[0])
               res.json(user[0])
             })
             .catch(err => res.status(400).json('unable to get user'))
