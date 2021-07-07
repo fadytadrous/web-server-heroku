@@ -25,6 +25,8 @@ app.use('/', require("./routes/sendcode"));
 app.use('/', require("./routes/addClinic"));
 app.use('/', require('./routes/index'));
 
+app.use('/', require('./routes/allPatients'));
+
 app.use('/', require('./routes/doctorProfile'));
 
 app.use('/', require('./routes/addpatient'));

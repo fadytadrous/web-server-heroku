@@ -34,6 +34,7 @@ router.post('/addpatient', async (req, res) => {
     try {
         await knex.transaction (async trx => {
             //Insert into login table
+
             const patient_id = await trx('patients')
                 .insert(patient);
             med = req.body.Medications;

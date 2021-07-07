@@ -12,5 +12,4 @@ const db=knex({
         database: 'heroku_e70fec14c252d2b'
     }
 });
-
 module.exports=db;
