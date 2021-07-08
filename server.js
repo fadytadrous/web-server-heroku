@@ -28,6 +28,8 @@ app.use('/', require('./routes/index'));
 app.use('/', require('./routes/allPatients'));
 
 app.use('/', require('./routes/doctorProfile'));
+app.use('/', require('./routes/doctorVisits'));
+app.use('/', require('./routes/secretaryProfile'));
 
 app.use('/', require('./routes/addpatient'));
 

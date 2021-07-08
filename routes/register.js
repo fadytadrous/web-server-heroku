@@ -64,7 +64,7 @@ router.post('/register', async (req, res) => {
             gender: gender, ssn: national_id,
             phone_number:phone_number, birth_date: birth_date,
             education: education,
-            address:address, email: email,
+            address:address, email: email,photo:photo,
             password: hash});
            
           if(pickedClinics.length){

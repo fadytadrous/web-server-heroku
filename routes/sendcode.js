@@ -5,20 +5,19 @@ const { v4: uuidv4 } = require('uuid');
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    service: "hotmail",
-    auth: {
-      user: "DruGuide@outlook.com", // generated ethereal user
-      pass: "drug123456", // generated ethereal password
-    },
-  });
+  service: 'gmail',
+  auth: {
+     user: 'DruGuide4@gmail.com',
+     pass: 'drug123456'
+  }
+});
   
   router.post('/sendcode', (req, res) => {
     const {customer_id , email} = req.body;
     const uuid = uuidv4();
   
     const options = {
-      from: "DruGuide@outlook.com",
+      from: "DruGuide4@gmail.com",
       to: email,
       subject: "DruGuide Registration Code",
       text: `Dear user Please use this code when registering to 
