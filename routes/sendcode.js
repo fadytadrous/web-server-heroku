@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../db/config')
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require("nodemailer");
+const authenticateToken = require("../middleware/checkAuth");
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -12,8 +13,9 @@ const transporter = nodemailer.createTransport({
   }
 });
   
-  router.post('/sendcode', (req, res) => {
-    const {customer_id , email} = req.body;
+  router.post('/sendcode',authenticateToken , (req, res) => {
+    const customer_id = req.user.customer_id;
+    const {email} = req.body;
     const uuid = uuidv4();
   
     const options = {
