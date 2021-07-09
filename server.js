@@ -33,9 +33,13 @@ app.use('/', require('./routes/secretaryProfile'));
 
 app.use('/', require('./routes/addpatient'));
 
+app.use('/', require('./routes/scheduleVisit'));
+app.use('/', require('./routes/allDoctors'));
+
+
 // starting the server
 app.listen(PORT, ()=> {
-    console.log('app is running on port 3000');
+    console.log('app is running on port' , PORT);
   })
 
 
