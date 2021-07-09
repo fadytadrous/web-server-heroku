@@ -4,7 +4,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const db = require('../db/config')
 const jwt = require("jsonwebtoken");
-const authenticateToken = require("../middleware/checkAuth");
+
 
 router.post('/signinPurchase', (req, res) => {
     db.select('email', 'password').from('purchasing_accounts')
@@ -29,23 +29,5 @@ router.post('/signinPurchase', (req, res) => {
   })
 
 
-
-  router.get('/try/:id', (req, res) => {
-
-    const  id  = req.params.id;
-    
-    // db.select('*').from('clinics')
-    db.select('*').from('clinics').where('customer_id', id)
-      .then(clinics => {
-        if (clinics.length) {
-          res.json(clinics)
-        } else {
-          res.json([])
-          // res.status(400).json('Not found')
-        }
-      })
-      .catch(err => console.log(err))
-      // .catch(err => res.status(400).json('error getting clinics'))
-  });
 
 module.exports = router;  
