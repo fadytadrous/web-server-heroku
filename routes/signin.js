@@ -38,9 +38,7 @@ router.post('/signin', (req, res) => {
         const isValid = await bcrypt.compareSync(password, data[0].password);
         console.log(email)
         if (isValid) {
-          return db.select( 'secretary_id', 'first_name', 'last_name','gender','ssn',
-                            'phone_number','birth_date', 'education',
-                            'address','email','photo').from('secretary')
+          return db.select( 'secretary_id').from('secretary')
             .where('email', '=', email)
             .then(user => {
               // console.log(user[0])
