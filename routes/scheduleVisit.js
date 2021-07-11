@@ -1,20 +1,21 @@
 const express = require("express");
 const router = express.Router();
-
+const authenticateToken = require("../middleware/checkAuth");
 const db = require('../db/config');
 
-router.post('/submitBooking', (req, res) => {
-    console.log(req.body.name);
-    console.log(req.body.patientSSN);
+router.post('/submitBooking', authenticateToken, (req, res) => {
 
     const data = req.body;
     console.log(data);
+
+    console.log(req.user.secretary_id);
 
     const patientSSN = req.body.patientSSN;
     const doctor = req.body.name;
     const doctorNameArr = doctor.split(" ");
     const visitDate = req.body.day;
     const visitTime = req.body.time;
+    const secretaryId = req.user.secretary_id;
     db('patients').where('ssn', patientSSN)
         .then((res) => {
             patientId = res[0].patient_id;
@@ -29,15 +30,25 @@ router.post('/submitBooking', (req, res) => {
                 })
                 .catch(err => console.log(err))
                 .then(() => {
-                    db('visit')
-                        .insert({
-                            patient_id: patientId, doctor_id: doctorId,
-                            clinic_id: 15, secretary_id: 25, date: visitDate, time: visitTime
-                        }, { includeTriggerModifications: true })
-                        .then((res) => {
-                            console.log(res);
+                    db('secretary_works_in').where('secretary_id', secretaryId)
+                        .then(res => {
+                            clinicId = res[0].clinic_id;
                         })
-                        .catch(err => { console.log(err) })
+                        .catch(err => { console.log(err); })
+                        .then(() => {
+                            db('visit')
+                                .insert({
+                                    patient_id: patientId, doctor_id: doctorId,
+                                    clinic_id: clinicId, secretary_id: secretaryId,
+                                    date: visitDate, time: visitTime
+                                },
+                                    { includeTriggerModifications: true })
+                                .then((res) => {
+                                    console.log(res);
+                                })
+                                .catch(err => { console.log(err) })
+                        })
+
 
                 })
 
