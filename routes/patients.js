@@ -1,10 +1,29 @@
 var express = require('express');
 var router = express.Router();
 const knex = require('../db/config')
+const authenticateToken = require("../middleware/checkAuth");
 
 /* GET ALL . */
-router.get('/', function (req, res, next) {
-    res.send('to be implemented')
+router.get('/', authenticateToken, function (req, res, next) {
+    const doctor_id = req.user.doctor_id;
+    var date;
+    date = new Date();
+    date = date.getUTCFullYear() + '-' +
+        ('00' + (date.getUTCMonth() + 1)).slice(-2) + '-' +
+        ('00' + date.getUTCDate()).slice(-2);
+
+    knex.from('patients')
+        .whereIn('patient_id', knex('visit')
+            .select('patient_id')
+            .where('doctor_id', doctor_id)
+            .where('date', date)
+
+        )
+        .then((results) => {
+            res.send(results);
+        })
+        .catch((err) => { res.status(500).send('server error please come back later'); throw err })
+
 });
 
 // GET ONE
@@ -20,12 +39,20 @@ router.get('/:id', function (req, res, next) {
 
 });
 // GET MEDICATIONS
-router.get('/:id/medications', function (req, res, next) {
+router.get('/:id/medications', authenticateToken, function (req, res, next) {
     const id = req.params.id;
+    var date;
+    date = new Date();
+    date = date.getUTCFullYear() + '-' +
+        ('00' + (date.getUTCMonth() + 1)).slice(-2) + '-' +
+        ('00' + date.getUTCDate()).slice(-2);
+
     knex.from('drug_products')
-        .whereIn('id', knex('medications')
+        .whereIn('product_id', knex('medications')
             .select('product_id')
             .where('patient_id', id)
+            .where('to_date', '>=', date)
+            .orWhere('chronic', true)
         )
         .then((results) => {
             res.send(results);
@@ -40,31 +67,31 @@ router.post('/:id/check_interactions', async function (req, res, next) {
     let drugs = [];
     let medications = [];
     drugs = req.body.drugs;
+
     //check if there are drugs
     (drugs && drugs.length < 1) ? res.send('there are no drugs provided') : null;
 
     //get patient medications
     await knex.from('drug_products')
-        .whereIn('id', knex('medications')
+        .whereIn('product_id', knex('medications')
             .select('product_id')
             .where('patient_id', id)
         ).then((results) => {
             medications = results;
         })
-        .catch((err) => { res.status(500).send('server error please come back later'); throw err })
+        .catch((err) => { res.status(500).send('server error please come back laters'); throw err })
 
     //map to parentkey only
-    drugs = drugs.map((value, index) => { return value.parent_key });
+    drugs_ = drugs.map((value, index) => { return value.parent_key });
     //map to parentkey only
-    medications = medications.map((value, index) => { return value.parent_key });
+    medications_ = medications.map((value, index) => { return value.parent_key });
 
     //get interesctions table 
     knex.from('drug_drug_interactions')
-        .whereIn('drugbank_id', drugs)
-        .whereIn('parent_key', medications)
-        .paginate({ perPage: 50, currentPage: page })
+        .whereIn('drugbank-id', drugs_)
+        .whereIn('parent_key', medications_)
         .then((results) => {
-            res.json(results);
+            res.json({ results: results, drugs: drugs, medications: medications });
         })
         .catch((err) => { res.status(500).send('server error please come back later'); throw err })
 

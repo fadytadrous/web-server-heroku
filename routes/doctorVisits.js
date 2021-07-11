@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const authenticateToken = require("../middleware/checkAuth");
 
 const db = require('../db/config')
 
-router.get('/doctorVisits/:id', (req, res) => {
+router.get('/doctorVisits',authenticateToken, (req, res) => {
 
-    const  id  = req.params.id;
+    const  id  = req.user.doctor_id;
     let today = new Date()
     let day = String(today.getDate()).padStart(2, '0');
     let month = String(today.getMonth()+1).padStart(2, '0');
