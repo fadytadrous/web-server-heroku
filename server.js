@@ -35,6 +35,7 @@ app.use('/', require('./routes/addpatient'));
 
 app.use('/', require('./routes/scheduleVisit'));
 app.use('/', require('./routes/allDoctors'));
+app.use('/', require('./routes/allDoctorsVisits'));
 
 
 // starting the server
