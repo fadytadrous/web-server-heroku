@@ -13,12 +13,19 @@ router.get('/', authenticateToken, function (req, res, next) {
         ('00' + date.getUTCDate()).slice(-2);
 
     knex.from('patients')
-        .whereIn('patient_id', knex('visit')
-            .select('patient_id')
-            .where('doctor_id', doctor_id)
-            .where('date', date)
 
+        .select([
+            'patients.*', 'visit.*'
+        ])
+        .where('visit.doctor_id', doctor_id)
+        .where('visit.date', date)
+
+        .leftOuterJoin(
+            'visit',
+            'patients.patient_id',
+            'visit.patient_id'
         )
+
         .then((results) => {
             res.send(results);
         })
@@ -67,6 +74,11 @@ router.post('/:id/check_interactions', async function (req, res, next) {
     let drugs = [];
     let medications = [];
     drugs = req.body.drugs;
+    var date;
+    date = new Date();
+    date = date.getUTCFullYear() + '-' +
+        ('00' + (date.getUTCMonth() + 1)).slice(-2) + '-' +
+        ('00' + date.getUTCDate()).slice(-2);
 
     //check if there are drugs
     (drugs && drugs.length < 1) ? res.send('there are no drugs provided') : null;
@@ -76,6 +88,9 @@ router.post('/:id/check_interactions', async function (req, res, next) {
         .whereIn('product_id', knex('medications')
             .select('product_id')
             .where('patient_id', id)
+            .where('to_date', '>=', date)
+            .orWhere('chronic', true)
+
         ).then((results) => {
             medications = results;
         })
