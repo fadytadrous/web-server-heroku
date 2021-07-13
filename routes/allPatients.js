@@ -31,7 +31,9 @@ router.get('/allPatients/:id',authenticateToken, function (req, res) {
             throw err
         });
     knex.select('patient_id',knex.raw('GROUP_CONCAT(??) AS ?? ',
-        [ 'date', "visits"]))
+        [ 'date', "visits"])
+        ,knex.raw('GROUP_CONCAT(??) AS ?? ',
+            [ 'diagnosis', "diagnosis"]))
         .from('visit')
         .where('doctor_id', doctor_id).andWhere(function () {
         this.where('date', '<', (new Date()))
@@ -40,7 +42,7 @@ router.get('/allPatients/:id',authenticateToken, function (req, res) {
         .then((patients) => {
             if (patients.length) {
                 res.json({patient:pa, visit: patients});
-
+                console.log(patients)
             } else {
                 res.json([])
             }
