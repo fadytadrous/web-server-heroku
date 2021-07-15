@@ -9,7 +9,8 @@ router.get('/', function (req, res, next) {
     
     
     knex.from('drug_products')
-        .where('name','like', `${name}%`).groupBy('parent_key')
+        // .where('name','like', `${name}%`).groupBy('parent_key')
+        .where('name','like', `${name}%`).groupBy('name')
 
         
 
