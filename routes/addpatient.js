@@ -5,6 +5,7 @@ const cors = require('cors');
 const knex = require('../db/config');
 let med=[];
 let m;
+const authenticateToken = require("../middleware/checkAuth");
 
 router.post('/addpatient', async (req, res) => {
 
@@ -60,7 +61,7 @@ router.post('/addpatient', async (req, res) => {
 
             const medicalhistory = await trx('medical_history')
                 .insert(medicalHistory);
-
+            res.json([]);
         })
     }
     catch (err){
