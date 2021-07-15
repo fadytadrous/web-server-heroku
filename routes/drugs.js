@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
         .paginate({ perPage: 5, currentPage: page })
 
         .then((results) => {
-            console.log(results)
+         //   console.log(results)
             if (name == "") {
                 res.json({ data: [] });
             } else {

@@ -36,12 +36,13 @@ app.use('/', require('./routes/addpatient'));
 app.use('/', require('./routes/scheduleVisit'));
 app.use('/', require('./routes/allDoctors'));
 app.use('/', require('./routes/allDoctorsVisits'));
+app.use('/', require('./routes/updatePatient'));
 
 
 // starting the server
 app.listen(PORT, ()=> {
     console.log('app is running on port' , PORT);
-  })
+  });
 
 
 

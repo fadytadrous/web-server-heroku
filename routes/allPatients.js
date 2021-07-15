@@ -52,7 +52,7 @@ router.get('/allPatients/:id',authenticateToken, function (req, res) {
             throw err
         });}
         else if(id === '2'){
-        // router.get('/allPatients', function (req, res) {
+
 
     knex.select('patients.*',
         knex.raw('GROUP_CONCAT(??.??) AS ?? ',

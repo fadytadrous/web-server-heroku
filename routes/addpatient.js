@@ -40,15 +40,15 @@ router.post('/addpatient', async (req, res) => {
             med = req.body.Medications;
             for (m in med) {
                 console.log(m);
-                const addmedication = await trx('drug_products').select("parent_key").where({name: med[m] });
+                const addmedication = await trx('drug_products').select("product_id").where({name: med[m] });
                 let medication = [
                     {
                         patient_id: patient_id[0],
-                        product_id: addmedication[m]["parent_key"],
+                        product_id: addmedication[m]["product_id"],
                         product_name: med[m],
                     }];
                 // medication.product_name = m ;
-                console.log(addmedication[m]["parent_key"]);
+                console.log(addmedication[m]["product_id"]);
                 const add2 = await trx('medications').insert(medication);
 
             }
