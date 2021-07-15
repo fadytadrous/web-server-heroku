@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
     const customer_id = req.user.customer_id;
     const {email} = req.body;
     const uuid = uuidv4();
-  
+    console.log(uuid);
     const options = {
       from: "DruGuide4@gmail.com",
       to: email,
