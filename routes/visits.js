@@ -42,7 +42,7 @@ router.put('/:id/prescription', authenticateToken, async function (req, res, nex
     // update visit
     knex.from('visit')
         .where('visit_id', id)
-        .update({ diagnosis: diagnosis })
+        .update({ diagnosis: diagnosis,completed:'yes' })
         .then(function () {
 
         })

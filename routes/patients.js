@@ -19,6 +19,7 @@ router.get('/', authenticateToken, function (req, res, next) {
         ])
         .where('visit.doctor_id', doctor_id)
         .where('visit.date', date)
+        .where('completed', 'no')
 
         .leftOuterJoin(
             'visit',
