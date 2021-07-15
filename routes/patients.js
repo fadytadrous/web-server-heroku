@@ -55,12 +55,13 @@ router.get('/:id/medications', authenticateToken, function (req, res, next) {
         ('00' + date.getUTCDate()).slice(-2);
 
     knex.from('drug_products')
+    .select(['drug_products.*','medications.*','doctors.doctor_id','doctors.first_name','doctors.last_name','doctors.email','doctors.specialty','doctors.phone_number'])
         .whereIn('drug_products.product_id', knex('medications')
             .select('medications.product_id')
             .where('patient_id', id)
             .where('to_date', '>=', date)
         ).leftOuterJoin('medications','drug_products.product_id','medications.product_id')
-
+        .leftOuterJoin('doctors','doctors.doctor_id','medications.doctor_id')
         .then((results) => {
             res.send(results);
         })
@@ -71,6 +72,7 @@ router.post('/:id/check_interactions', async function (req, res, next) {
     const id = req.params.id;
     let medications = [];
     let drug = req.body.drug;
+    //get current date
         var date;
     date = new Date();
     date = date.getUTCFullYear() + '-' +

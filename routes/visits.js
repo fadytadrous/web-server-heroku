@@ -33,7 +33,8 @@ router.put('/:id/prescription', async function (req, res, next) {
             product_id: value.product_id,
             patient_id:patient.patient_id,
             to_date:value.to_date,
-            product_name:value.name
+            product_name:value.name,
+            dose:value.dose
         }
     });
     //update visit
@@ -55,7 +56,9 @@ router.put('/:id/prescription', async function (req, res, next) {
                 return {
                     product_id: value.product_id,
                     prescription_id: prescription_id,
-                    to_date:value.to_date
+                    to_date:value.to_date,
+                    dose:value.dose
+
 
                 }
             });

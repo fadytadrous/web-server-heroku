@@ -38,8 +38,11 @@ router.get('/:id', authenticateToken, async function   (req, res, next) {
         .catch((err) => { res.status(500).send('server error please come back later'); throw err })
 
         await knex.from('prescribed_drugs')
+        .select(['drug_products.*','prescribed_drugs.*','doctors.doctor_id','doctors.first_name','doctors.last_name','doctors.email','doctors.specialty','doctors.phone_number'])
         .where('prescription_id',prescription_id)
         .leftOuterJoin('drug_products','drug_products.product_id','prescribed_drugs.product_id')
+        .leftOuterJoin('doctors','prescribed_drugs.doctor_id','doctors.doctor_id')
+        
         .then((result) => {
             return res.json([{"drugs":result,"patient":patient,"diagnosis":diagnosis}]);
         })

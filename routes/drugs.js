@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
         name="a";
     } 
     knex.from('drug_products')
-        .where('name', 'like', `${name}%`).groupBy('parent_key')
+        .where('name', 'like', `${name}%`).groupBy('name')
 
 
 
@@ -52,7 +52,7 @@ router.get('/:id', function (req, res, next) {
     const id = req.params.id;
 
     knex.from('drug_products')
-        .where('id', id)
+        .where('product_id', id)
         .first()
         .then((results) => {
             res.json({ drug: results });
