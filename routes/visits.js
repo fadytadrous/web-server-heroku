@@ -10,7 +10,32 @@ router.put('/:id/prescription', async function (req, res, next) {
     const id = req.params.id;
     let diagnosis = req.body.diagnosis;
     let drugs = req.body.drugs;
+    let patient ,visit;
+    
+    await knex.from('visit')
+    .where('visit_id',id)
+    .first()
+    .then((result) => {
+        visit =result;
+    })
 
+    await knex.from('patients')
+    .where('patient_id',visit.patient_id)
+    .first()
+    .then((result) => {
+        patient=result;
+    })
+    .catch((err) => { res.status(500).send('server error please come back later'); throw err })
+
+    
+    drugs_2 = drugs.map((value, index) => {
+        return {
+            product_id: value.product_id,
+            patient_id:patient.patient_id,
+            to_date:value.to_date,
+            product_name:value.name
+        }
+    });
     //update visit
     knex.from('visit')
         .where('visit_id', id)
@@ -29,14 +54,23 @@ router.put('/:id/prescription', async function (req, res, next) {
             drugs = drugs.map((value, index) => {
                 return {
                     product_id: value.product_id,
-                    prescription_id: prescription_id
+                    prescription_id: prescription_id,
+                    to_date:value.to_date
+
                 }
             });
             // //add drugs to prescription 
             knex('prescribed_drugs')
                 .insert(drugs)
-                .then(function () {
-                    res.json("success");
+                .then(function (results) {
+                    // //add drugs to medications 
+                    knex('medications')
+                        .insert(drugs_2)
+                        .then(function (results) {
+                            res.json(prescription_id);
+                        })
+                        .catch((err) => { res.status(500).send('server error please come back later'); throw err })
+
                 })
                 .catch((err) => { res.status(500).send('server error please come back later'); throw err })
         })

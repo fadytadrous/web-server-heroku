@@ -4,12 +4,16 @@ const knex = require('../db/config')
 
 /* GET ALL . */
 router.get('/', function (req, res, next) {
-    const name = req.query.name;
+    let name = req.query.name;
     const page = req.query.page;
 
-
+    if (name == "") {
+        name="a";
+    } 
     knex.from('drug_products')
-        .where('name', 'like', `${name}%`).groupBy('parent_key')
+
+        // .where('name','like', `${name}%`).groupBy('parent_key')
+        .where('name','like', `${name}%`).groupBy('name')
 
 
 
@@ -17,13 +21,8 @@ router.get('/', function (req, res, next) {
         .paginate({ perPage: 5, currentPage: page })
 
         .then((results) => {
-         //   console.log(results)
-            if (name == "") {
-                res.json({ data: [] });
-            } else {
                 res.json(results);
                 //  console.log(results);
-            }
         })
         .catch((err) => { res.status(500).send('server error please come back later'); throw err })
 

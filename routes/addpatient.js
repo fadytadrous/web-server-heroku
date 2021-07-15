@@ -16,6 +16,7 @@ router.post('/addpatient', async (req, res) => {
             phone_number: req.body.phoneNumber,
             gender: req.body.gender,
             address: req.body.address,
+            photo: req.body.photo,
             birth_date: req.body.birthdate,
 
 
