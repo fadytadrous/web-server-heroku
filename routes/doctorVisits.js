@@ -14,7 +14,7 @@ router.get('/doctorVisits',authenticateToken, (req, res) => {
     let full =  year+ '-' + month + '-' + day; 
     db('visit')
     .join('patients', 'visit.patient_id', 'patients.patient_id')
-    .select('visit.visit_id','visit.time','patients.first_name', 'patients.last_name').where({ doctor_id : id , date: full })
+    .select('visit.visit_id','visit.time','patients.first_name', 'patients.last_name').where({ doctor_id : id , date: full, completed:'no' })
 
     // db('visit').where({ doctor_id : id , date: full })
 
