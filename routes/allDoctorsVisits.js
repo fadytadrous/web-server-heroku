@@ -26,6 +26,7 @@ router.get("/showTodaysVisits", authenticateToken, (req, res) => {
                 .join("patients", "visit.patient_id", "=", "patients.patient_id")
                 .where("clinic_id", clinicId)
                 .andWhere("date", full)
+                .andWhere("completed", 'no')
                 .select(["visit.visit_id", "visit.time",
                     "patients.first_name", "patients.last_name",
                     db.ref("doctors.first_name").as("doctor_firstname"),
