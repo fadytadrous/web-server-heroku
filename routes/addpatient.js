@@ -16,6 +16,7 @@ router.post('/addpatient', async (req, res) => {
             phone_number: req.body.phoneNumber,
             gender: req.body.gender,
             address: req.body.address,
+            photo: req.body.photo,
             birth_date: req.body.birthdate,
 
 
@@ -24,8 +25,8 @@ router.post('/addpatient', async (req, res) => {
     var medicalHistory =[{
         patient_id :'',
         major_illnesses: req.body.majorillnesses,
-        previous_surgey: req.body.previoussurgery,
-        previous_illnessess: req.body.previousillnesses,
+        previous_surgery: req.body.previoussurgery,
+        previous_illnesses: req.body.previousillnesses,
         diabetes:  new Boolean(req.body.diabetes === 'yes') ? 1 : 0,
         family_diseases:req.body.familydiseases,
         allergies: req.body.allergies,
@@ -40,15 +41,15 @@ router.post('/addpatient', async (req, res) => {
             med = req.body.Medications;
             for (m in med) {
                 console.log(m);
-                const addmedication = await trx('drug_products').select("parent_key").where({name: med[m] });
+                const addmedication = await trx('drug_products').select("product_id").where({name: med[m] });
                 let medication = [
                     {
                         patient_id: patient_id[0],
-                        product_id: addmedication[m]["parent_key"],
+                        product_id: addmedication[m]["product_id"],
                         product_name: med[m],
                     }];
                 // medication.product_name = m ;
-                console.log(addmedication[m]["parent_key"]);
+                console.log(addmedication[m]["product_id"]);
                 const add2 = await trx('medications').insert(medication);
 
             }

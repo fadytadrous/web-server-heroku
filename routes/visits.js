@@ -5,36 +5,38 @@ const authenticateToken = require("../middleware/checkAuth");
 
 
 // POST Visit diagnosis 
-router.put('/:id/prescription', async function (req, res, next) {
+router.put('/:id/prescription', authenticateToken, async function (req, res, next) {
 
     const id = req.params.id;
+    const doctor_id = req.user.doctor_id;
     let diagnosis = req.body.diagnosis;
     let drugs = req.body.drugs;
-    let patient ,visit;
-    
+    let patient, visit;
+
     await knex.from('visit')
-    .where('visit_id',id)
-    .first()
-    .then((result) => {
-        visit =result;
-    })
+        .where('visit_id', id)
+        .first()
+        .then((result) => {
+            visit = result;
+        })
 
     await knex.from('patients')
-    .where('patient_id',visit.patient_id)
-    .first()
-    .then((result) => {
-        patient=result;
-    })
-    .catch((err) => { res.status(500).send('server error please come back later'); throw err })
+        .where('patient_id', visit.patient_id)
+        .first()
+        .then((result) => {
+            patient = result;
+        })
+        .catch((err) => { res.status(500).send('server error please come back later'); throw err })
 
-    
+
     drugs_2 = drugs.map((value, index) => {
         return {
             product_id: value.product_id,
-            patient_id:patient.patient_id,
-            to_date:value.to_date,
-            product_name:value.name,
-            dose:value.dose
+            patient_id: patient.patient_id,
+            to_date: value.to_date,
+            product_name: value.name,
+            dose: value.dose,
+            doctor_id: doctor_id
         }
     });
     //update visit
@@ -56,8 +58,10 @@ router.put('/:id/prescription', async function (req, res, next) {
                 return {
                     product_id: value.product_id,
                     prescription_id: prescription_id,
-                    to_date:value.to_date,
-                    dose:value.dose
+                    to_date: value.to_date,
+                    dose: value.dose,
+                    doctor_id: doctor_id
+
 
 
                 }
