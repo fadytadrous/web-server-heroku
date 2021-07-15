@@ -24,6 +24,7 @@ app.use('/', require("./routes/signinPurchase"));
 app.use('/', require("./routes/sendcode"));
 app.use('/', require("./routes/addClinic"));
 app.use('/', require('./routes/index'));
+app.use('/', require('./routes/editProfile'));
 
 app.use('/', require('./routes/allPatients'));
 
