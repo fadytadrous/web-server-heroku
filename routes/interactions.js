@@ -6,7 +6,7 @@ const knex = require('../db/config')
 router.get('/drug/:id', function (req, res, next) {
     const page = req.query.page;
     const id = req.params.id;
-    //get first drug product with id
+    // get first drug product with id
     knex.from('drug_products')
         .where('product_id',`${id}`)
         .first()

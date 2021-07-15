@@ -39,7 +39,7 @@ router.put('/:id/prescription', authenticateToken, async function (req, res, nex
             doctor_id: doctor_id
         }
     });
-    //update visit
+    // update visit
     knex.from('visit')
         .where('visit_id', id)
         .update({ diagnosis: diagnosis })
@@ -49,7 +49,7 @@ router.put('/:id/prescription', authenticateToken, async function (req, res, nex
         .catch((err) => { res.status(500).send('server error please come back later'); throw err })
 
     let prescription_id;
-    //create prescription
+    // create prescription
     knex('prescription')
         .insert({ visit_id: id })
         .then(function (result) {
@@ -66,11 +66,11 @@ router.put('/:id/prescription', authenticateToken, async function (req, res, nex
 
                 }
             });
-            // //add drugs to prescription 
+            // add drugs to prescription 
             knex('prescribed_drugs')
                 .insert(drugs)
                 .then(function (results) {
-                    // //add drugs to medications 
+                    // add drugs to medications 
                     knex('medications')
                         .insert(drugs_2)
                         .then(function (results) {

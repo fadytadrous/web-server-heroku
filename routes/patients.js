@@ -72,14 +72,14 @@ router.post('/:id/check_interactions', async function (req, res, next) {
     const id = req.params.id;
     let medications = [];
     let drug = req.body.drug;
-    //get current date
+    // get current date
         var date;
     date = new Date();
     date = date.getUTCFullYear() + '-' +
         ('00' + (date.getUTCMonth() + 1)).slice(-2) + '-' +
         ('00' + date.getUTCDate()).slice(-2);
 
-//     //get patient medications
+    // get patient medications
     await knex.from('drug_products')
                 .select([
             'drug_products.*', 'drug_drug_interactions.name as interaction_name' ,'drug_drug_interactions.description'
