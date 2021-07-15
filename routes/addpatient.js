@@ -25,8 +25,8 @@ router.post('/addpatient', async (req, res) => {
     var medicalHistory =[{
         patient_id :'',
         major_illnesses: req.body.majorillnesses,
-        previous_surgey: req.body.previoussurgery,
-        previous_illnessess: req.body.previousillnesses,
+        previous_surgery: req.body.previoussurgery,
+        previous_illnesses: req.body.previousillnesses,
         diabetes:  new Boolean(req.body.diabetes === 'yes') ? 1 : 0,
         family_diseases:req.body.familydiseases,
         allergies: req.body.allergies,
