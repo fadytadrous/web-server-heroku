@@ -54,7 +54,7 @@ router.get('/:id', function (req, res, next) {
     const id = req.params.id;
 
     knex.from('drug_products')
-        .where('id', id)
+        .where('product_id', id)
         .first()
         .then((results) => {
             res.json({ drug: results });

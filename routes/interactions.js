@@ -8,7 +8,7 @@ router.get('/drug/:id', function (req, res, next) {
     const id = req.params.id;
     //get first drug product with id
     knex.from('drug_products')
-        .where('id',`${id}`)
+        .where('product_id',`${id}`)
         .first()
         .then((row) => {
             // get interactions of it
