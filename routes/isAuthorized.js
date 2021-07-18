@@ -8,8 +8,14 @@ router.post('/isAuthorized', (req, res) => {
     db.select('*').from('authorized_users').where('uuid', uuid)
       .then(user => {
         if (user.length) {
-          console.log("yes user")
-          res.json(user)
+          if(user[0].doctor_id === null && user[0].secretary_id === null){
+            console.log("yes user")
+            res.json(user)
+          }else {
+            console.log("Used code")
+            res.status(400).json('Used code')
+          }
+          
         } else {
           console.log("no user")
           res.status(400).json('no user')
