@@ -36,7 +36,7 @@ router.get('/allPatients/:id',authenticateToken, function (req, res) {
             [ 'diagnosis', "diagnosis"]))
         .from('visit')
         .where('doctor_id', doctor_id).andWhere(function () {
-        this.where('date', '<', (new Date()))
+        this.where('date', '<', (new Date())).where({completed : 'yes'})
     })
         .groupBy('patient_id')
         .then((patients) => {

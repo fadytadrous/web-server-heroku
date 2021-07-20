@@ -43,14 +43,14 @@ router.post('/addpatient', async (req, res) => {
             for (m in med) {
                 console.log(m);
                 const addmedication = await trx('drug_products').select("product_id").where({name: med[m] });
+                console.log(addmedication[0]["product_id"]);
                 let medication = [
                     {
                         patient_id: patient_id[0],
-                        product_id: addmedication[m]["product_id"],
+                        product_id: addmedication[0]["product_id"],
                         product_name: med[m],
                     }];
                 // medication.product_name = m ;
-                console.log(addmedication[m]["product_id"]);
                 const add2 = await trx('medications').insert(medication);
 
             }
