@@ -60,7 +60,8 @@ router.get('/:id/medications', authenticateToken, function (req, res, next) {
         .whereIn('drug_products.product_id', knex('medications')
             .select('medications.product_id')
             .where('patient_id', id)
-            .where('to_date', '>=', date)
+            .where(function() {
+                this.where('to_date', '>=', date).orWhereNull('to_date')})
         ).leftOuterJoin('medications','drug_products.product_id','medications.product_id')
         .leftOuterJoin('doctors','doctors.doctor_id','medications.doctor_id')
         .then((results) => {

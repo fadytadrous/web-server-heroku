@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const knex = require('../db/config');
-var pa;
+var pa={};
 const authenticateToken = require("../middleware/checkAuth");
 
 router.get('/allPatients/:id',authenticateToken, function (req, res) {
@@ -21,7 +21,7 @@ router.get('/allPatients/:id',authenticateToken, function (req, res) {
 
             if (patients.length) {
                 pa = patients;
-                console.log(pa);
+
             }
         })
         .catch(err => {
@@ -39,7 +39,7 @@ router.get('/allPatients/:id',authenticateToken, function (req, res) {
         .then((patients) => {
             if (patients.length) {
                 res.json({patient:pa, visit: patients});
-                console.log(patients)
+                console.log({patient:pa, visit: patients})
             } else {
                 res.json({patient:pa});
             }
