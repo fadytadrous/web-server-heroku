@@ -18,17 +18,14 @@ router.get('/allPatients/:id',authenticateToken, function (req, res) {
         .innerJoin('visit', 'patients.patient_id', '=', 'visit.patient_id').where('visit.doctor_id', doctor_id)
         .groupBy('patients.patient_id')
         .then((patients) => {
+
             if (patients.length) {
                 pa = patients;
-
-            } else {
-                res.json([])
+                console.log(pa);
             }
         })
-
-        .catch((err) => {
-            res.status(500).send('server error please come back later');
-            throw err
+        .catch(err => {
+            console.log(err);
         });
     knex.select('patient_id',knex.raw('GROUP_CONCAT(??) AS ?? ',
         [ 'date', "visits"])
@@ -44,12 +41,11 @@ router.get('/allPatients/:id',authenticateToken, function (req, res) {
                 res.json({patient:pa, visit: patients});
                 console.log(patients)
             } else {
-                res.json([])
+                res.json({patient:pa});
             }
         })
-        .catch((err) => {
-            res.status(500).send('server error please come back later');
-            throw err
+        .catch(err => {
+            console.log(err);
         });}
         else if(id === '2'){
 
@@ -73,7 +69,9 @@ router.get('/allPatients/:id',authenticateToken, function (req, res) {
                 res.json([])
             }
         })
-        .catch((err) => { res.status(500).send('server error please come back later'); throw err })
+        .catch(err => {
+            console.log(err);
+        });
 
     }
 });
