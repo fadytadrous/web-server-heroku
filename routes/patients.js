@@ -54,16 +54,15 @@ router.get('/:id/medications', authenticateToken, function (req, res, next) {
     date = date.getUTCFullYear() + '-' +
         ('00' + (date.getUTCMonth() + 1)).slice(-2) + '-' +
         ('00' + date.getUTCDate()).slice(-2);
-
     knex.from('drug_products')
-    .select(['drug_products.*','medications.*','doctors.doctor_id','doctors.first_name','doctors.last_name','doctors.email','doctors.specialty','doctors.phone_number'])
-        .whereIn('drug_products.product_id', knex('medications')
-            .select('medications.product_id')
-            .where('patient_id', id)
-            .where(function() {
-                this.where('to_date', '>=', date).orWhereNull('to_date')})
-        ).leftOuterJoin('medications','drug_products.product_id','medications.product_id')
-        .leftOuterJoin('doctors','doctors.doctor_id','medications.doctor_id')
+        .select(['drug_products.*', 'medications.*', 'doctors.doctor_id', 'doctors.first_name', 'doctors.last_name', 'doctors.email', 'doctors.specialty', 'doctors.phone_number'])
+        .where('patient_id', id)
+        .where(function () {
+            this.where('to_date', '>=', date).orWhereNull('to_date')
+        })
+
+        .leftOuterJoin('medications', 'drug_products.product_id', 'medications.product_id')
+        .leftOuterJoin('doctors', 'doctors.doctor_id', 'medications.doctor_id')
         .then((results) => {
             res.send(results);
         })
@@ -75,7 +74,7 @@ router.post('/:id/check_interactions', async function (req, res, next) {
     let medications = [];
     let drug = req.body.drug;
     // get current date
-        var date;
+    var date;
     date = new Date();
     date = date.getUTCFullYear() + '-' +
         ('00' + (date.getUTCMonth() + 1)).slice(-2) + '-' +
@@ -83,19 +82,19 @@ router.post('/:id/check_interactions', async function (req, res, next) {
 
     // get patient medications
     await knex.from('drug_products')
-                .select([
-            'drug_products.*', 'drug_drug_interactions.name as interaction_name' ,'drug_drug_interactions.description'
+        .select([
+            'drug_products.*', 'drug_drug_interactions.name as interaction_name', 'drug_drug_interactions.description'
         ])
         .whereIn('product_id', knex('medications')
             .select('product_id')
             .where('patient_id', id)
             .where('to_date', '>=', date)
 
-    ).leftOuterJoin('drug_drug_interactions','drug_drug_interactions.parent_key','drug_products.parent_key')
-                .where('drugbank-id', drug.parent_key)
-                    
+        ).leftOuterJoin('drug_drug_interactions', 'drug_drug_interactions.parent_key', 'drug_products.parent_key')
+        .where('drugbank-id', drug.parent_key)
+
         .then((results) => {
-            return res.json({results,drug});
+            return res.json({ results, drug });
         })
         .catch((err) => { res.status(500).send('server error please come back later'); throw err })
 
