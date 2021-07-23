@@ -89,7 +89,8 @@ router.post('/:id/check_interactions', async function (req, res, next) {
         .whereIn('product_id', knex('medications')
             .select('product_id')
             .where('patient_id', id)
-            .where('to_date', '>=', date)
+            .where(function() {
+                this.where('to_date', '>=', date).orWhereNull('to_date')})
 
     ).leftOuterJoin('drug_drug_interactions','drug_drug_interactions.parent_key','drug_products.parent_key')
                 .where('drugbank-id', drug.parent_key)
