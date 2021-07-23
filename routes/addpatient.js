@@ -28,10 +28,10 @@ router.post('/addpatient', async (req, res) => {
         major_illnesses: req.body.majorillnesses,
         previous_surgery: req.body.previoussurgery,
         previous_illnesses: req.body.previousillnesses,
-        diabetes:  new Boolean(req.body.diabetes === 'yes') ? 1 : 0,
+        diabetes:  (req.body.diabetes === 'yes') ? 1 : 0,
         family_diseases:req.body.familydiseases,
         allergies: req.body.allergies,
-        tobacco: new Boolean(req.body.tobacco === 'yes') ? 1 : 0
+        tobacco: (req.body.tobacco === 'yes') ? 1 : 0
     }];
     try {
         await knex.transaction (async trx => {

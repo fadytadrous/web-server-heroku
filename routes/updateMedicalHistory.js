@@ -14,10 +14,14 @@ router.post('/updateMedicalHistory', async (req, res) => {
 
     for(const x of myArray) {
         if (x !== 'id') {
-
-            patient[x] = req.body[x];
-
+            if(x==='diabetes' || x==='tobacco'){
+                patient[x]= (req.body[x]==='yes')? 1 : 0
+            }
+            else {
+                patient[x] = req.body[x];
+            }
         }
+
     }
     id = req.body.id;
     console.log(patient);
