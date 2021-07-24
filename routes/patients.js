@@ -122,7 +122,7 @@ router.post("/:id/check_interactions", async function (req, res, next) {
           this.where("to_date", ">=", date).orWhereNull("to_date");
         })
     )
-    .leftOuterJoin(
+    .join(
       "drug_drug_interactions",
       "drug_drug_interactions.parent_key",
       "drug_products.parent_key"
