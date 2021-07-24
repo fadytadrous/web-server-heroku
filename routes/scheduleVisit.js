@@ -22,7 +22,6 @@ router.post("/submitBooking", authenticateToken, (req, res) => {
       console.log(patientId);
     })
     .catch((err) => {
-      console.log("a");
       res.status(400).json("unable to send code");
     })
     .then(() => {
@@ -33,7 +32,9 @@ router.post("/submitBooking", authenticateToken, (req, res) => {
           doctorId = res[0].doctor_id;
           console.log(doctorId);
         })
-        .catch((err) => console.log("q"))
+        .catch((err) => {
+          res.status(400).json("unable to send code");
+        })
         .then(() => {
           db("secretary_works_in")
             .where("secretary_id", secretaryId)
@@ -41,7 +42,6 @@ router.post("/submitBooking", authenticateToken, (req, res) => {
               clinicId = res[0].clinic_id;
             })
             .catch((err) => {
-              console.log("b");
               res.status(400).json("unable to send code");
             })
             .then(() => {
